@@ -109,9 +109,9 @@ class BVCC:
     def _process_split(self, split='train') -> None:
         label_csv_path = self._base_folder / "main/DATA/sets" / f"{split.upper()}SET"
         data_df = pd.read_csv(label_csv_path, header=None)
-        data_df = data_df[[1, 2]].rename(columns={1: "file_name", 2: "ratings"})
-        rating_stats = data_df.groupby('file_name')['ratings'].agg(['mean', 'std', 'sem', 'count'])
-        rating_dist = data_df.groupby('file_name')['ratings'].value_counts().unstack(fill_value=0)
+        data_df = data_df[[1, 2]].rename(columns={1: "file_name", 2: "rating"})
+        rating_stats = data_df.groupby('file_name')['rating'].agg(['mean', 'std', 'sem', 'count'])
+        rating_dist = data_df.groupby('file_name')['rating'].value_counts().unstack(fill_value=0)
         rating_dist = rating_dist.rename(columns={r: f"rating_{r}" for r in rating_dist.columns})
         meta_df = pd.merge(rating_stats, rating_dist, left_index=True, right_index=True)
         meta_df.reset_index(inplace=True)
